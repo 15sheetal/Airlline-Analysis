@@ -99,8 +99,6 @@ if selected == "Introduction":
 
 # Data page
 if selected == "Data":
-    st.markdown("<h2 style='text-align: left; font-weight: bold; font-size: 28px;'>Description</h2>", unsafe_allow_html=True)
-    st.divider()
     st.subheader("Data")
     st.write(df)
 

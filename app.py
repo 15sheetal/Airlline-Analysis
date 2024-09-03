@@ -30,6 +30,7 @@ target_colors = {
 
 # Set up the Streamlit page configuration
 st.set_page_config(page_title='Airline', layout='wide', page_icon="✈️")
+st.markdown("<h1 style='text-align: center; font-weight: bold;'>✈️ <span style='color:black;'>Airline</span></h1>", unsafe_allow_html=True)
 
 # Set up the background image
 def set_bg_hack_url():

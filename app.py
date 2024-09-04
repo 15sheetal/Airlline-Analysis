@@ -694,13 +694,14 @@ if selected == "Prediction":
     st.divider()
 
     # Logistic regression model coefficients and intercept
-    intercept = -11.3  
+    intercept = -0.44  
     coefficients = {
-        "Overall Inflight Experience": 0.96,
-        "E-flight Experiece": 1.07,
-        "Luggage Logistics": 0.69,
-        "Off flight Experience": 0.49,
-        "Check-IN Experience": 0.56
+        "Overall Inflight Experience": 0.95,
+        "E-flight Experiece": 1.03,
+        "Luggage Logistics": 0.84,
+        "Age Comfort":0.38,
+        "Off flight Experience": -0.55,
+        "Check-IN Experience": 0.45
     }
 
     # Create sliders for each factor to take input on a scale of 1 to 5 for satisfaction
@@ -715,9 +716,35 @@ if selected == "Prediction":
         coefficients["Overall Inflight Experience"] * inputs["Overall Inflight Experience"] +
         coefficients["E-flight Experiece"] * inputs["E-flight Experiece"] +
         coefficients["Luggage Logistics"] * inputs["Luggage Logistics"] +
+        coefficients["Age Comfort"] * inputs["Age Comfort"]+
         coefficients["Off flight Experience"] * inputs["Off flight Experience"] +
         coefficients["Check-IN Experience"] * inputs["Check-IN Experience"]
     )
+    probability = 1 / (1 + np.exp(-linear_combination))
+
+
+    # Define thresholds for satisfaction categories
+    very_satisfied_threshold = 0.8  # Threshold for "Very Satisfied"
+    satisfied_threshold = 0.6       # Threshold for "Satisfied"
+    neutral_threshold = 0.4         # Threshold for "Neutral"
+    strongly_dissatisfied_threshold = 0.2  # Threshold for "Strongly Dissatisfied"
+
+    # Determine satisfaction status based on probability thresholds
+    if probability >= very_satisfied_threshold:
+        satisfaction_status = "Very Satisfied"
+    elif probability >= satisfied_threshold:
+        satisfaction_status = "Satisfied"
+    elif probability >= neutral_threshold:
+        satisfaction_status = "Neutral"
+    elif probability >= strongly_dissatisfied_threshold:
+        satisfaction_status = "Strongly Dissatisfied"
+    else:
+        satisfaction_status = "Very Dissatisfied"
+
+    # Display only the satisfaction status
+    st.write(f"Customer is: {satisfaction_status}")
+
+
 if selected == "Conclusion":
     st.markdown("<h2 style='text-align: left; font-weight: bold; font-size: 28px;'>Conclusion</h2>", unsafe_allow_html=True)
     st.divider()

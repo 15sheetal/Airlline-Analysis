@@ -141,8 +141,7 @@ if selected == "Visualization":
 
     # Dropdown list for various visualizations
     viz_type = st.selectbox("Select Visualization Type", [
-        "Output Variable Visualization", 
-        "Passenger Profile Visualization", 
+        "Output Variable Visualization",  
         "Class Donut Chart",
         "Age Distribution Chart", 
         "Ordinal Data Visualization", 
@@ -200,81 +199,7 @@ if selected == "Visualization":
 
         # Display the figure
         st.plotly_chart(fig)
-
-    elif viz_type == "Passenger Profile Visualization":
-        # Add buttons to show each type of visualization
-         col1, col2 = st.columns(2)
-         with col1:
-                gender_pie_chart = make_subplots(
-                    rows=1, cols=2,
-                    subplot_titles=("Gender", "Customer Type"),
-                    specs=[[{"type": "domain"}, {"type": "domain"}]],
-                    column_widths=[0.5, 0.5],
-                )
-
-                # Gender distribution pie chart
-                gender_pie_chart.add_trace(
-                    go.Pie(
-                        labels=df['Gender'].value_counts().index,
-                        values=df['Gender'].value_counts().values,
-                        pull=[0, 0.090],
-                        marker=dict(colors=target_colors),
-                        textinfo='percent+label',
-                        rotation=90,
-                    ),
-                    row=1, col=1
-                )
-
-                # Customer Type distribution pie chart
-                gender_pie_chart.add_trace(
-                    go.Pie(
-                        labels=df['Customer Type'].value_counts().index,
-                        values=df['Customer Type'].value_counts().values,
-                        pull=[0, 0.2],
-                        marker=dict(colors=target_colors),
-                        textinfo='percent+label',
-                        rotation=90,
-                    ),
-                    row=1, col=2
-                )
-
-                gender_pie_chart.update_layout(
-                    title_text='Passenger Profile',
-                    title_font=dict(size=24, family='moonspace', color='black'),
-                    title_x=0.5,
-                    height=700,
-                    width=1000,
-                    showlegend=True
-                )
-
-                st.plotly_chart(gender_pie_chart)
-                with col2:
-                # Prepare data for Gender and Customer Type distribution
-                       gender_counts = df.groupby(['Gender', 'satisfaction']).size().reset_index(name='count')
-
-                # Gender Distribution bar chart
-                fig1 = px.bar(
-                    gender_counts,
-                    x='Gender',
-                    y='count',
-                    color='satisfaction',
-                    color_discrete_map=target_colors,
-                    text='count',
-                    title='Gender Distribution'
-                )
-
-                fig1.update_traces(texttemplate='%{text}', textposition='outside')
-                fig1.update_layout(
-                    title_text='Gender Distribution',
-                    xaxis_title='Gender',
-                    yaxis_title='Count',
-                    xaxis_title_font=dict(size=20, family='moonspace'),
-                    yaxis_title_font=dict(size=20, family='moonspace'),
-                    xaxis=dict(tickangle=-45)
-                )
-
-                st.plotly_chart(fig1)
-
+   
     elif viz_type == "Class Donut Chart":
         # Data for the pie chart
         labels = list(df['Class'].value_counts().index)
